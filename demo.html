@@ -1,0 +1,115 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="demo" style="width:500px; height: 500px"></div>
+    <!-- <svg id="demo" width="500" height="500" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    </svg> -->
+    <script src="./imageAnnotation.js"></script>
+    <script>
+        console.log('123123======>>', imageAnnotation);
+        imageAnnotation.init('demo');
+        // var NS_SVG = "http://www.w3.org/2000/svg";
+        // let svg = document.getElementById('demo');
+        // var tempLines;  // 保存当前创建的线 用于创建围栏
+        // var tempPointList = [];  // 保存当前未变成多边形的点的列表
+        // var tempPointMap = {};   // 保存当前未变成多边形的点的横纵坐标
+        // svg.addEventListener('click', (data, err) => {
+        //     let circle = createCircle(data.x, data.y);
+        //     if (circle) {
+        //         svg.appendChild(circle);
+        //         tempLines = createLine(data.x, data.y, data.x, data.y);
+        //         svg.appendChild(tempLines);
+        //         let json = {
+        //             x: data.x,
+        //             y: data.y,
+        //             point: circle
+        //         };
+        //         tempPointList.push(json);
+        //     }
+        // });
+        // svg.addEventListener('mousemove', (data) => {
+        //     if (tempLines) {
+        //         let json = selectNearPoint(data.x, data.y);
+        //         tempLines.setAttribute('x2', json.x);
+        //         tempLines.setAttribute('y2', json.y);
+
+        //     }
+
+        // })
+
+        function createCircle(x, y) {
+            if (x, y) {
+                let circle = document.createElementNS(NS_SVG, 'circle');
+                circle.setAttribute('r', 3);
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('fill', 'black');
+                return circle;
+            } else {
+                return null;
+            }
+        }
+        function createLine(sourceX, sourceY, targetX, targetY) {
+            if (sourceX && sourceY && targetX && targetY) {
+                let line = document.createElementNS(NS_SVG, 'line');
+                line.setAttribute('x1', sourceX);
+                line.setAttribute('y1', sourceY);
+                line.setAttribute('x2', targetX);
+                line.setAttribute('y2', targetY);
+                line.setAttribute('style', 'stroke: black');
+                return line;
+            }
+        }
+
+        function selectNearPoint(x, y) {
+            if (x, y) {
+                let length = tempPointList.length;
+                let tempSelectPoint = [];   // 临时选中的点 用于二次判断
+                // 先根据纵坐标判断 是否在点的范围
+                let tempRemoving = 5;
+                for (let i = 0; i < length; i++) {
+                    let temp = +tempPointList[i].x - +x;
+                    temp = Math.abs(temp);
+                    if (temp < tempRemoving) {
+                        tempSelectPoint = [];
+                        tempSelectPoint.push(tempPointList[i]);
+                        tempRemoving = temp;
+                    } else if (temp === tempRemoving) {
+                        tempSelectPoint.push(tempPointList[i]);
+                    }
+                }
+                if (tempSelectPoint.length === 1) {
+                    return { x: tempSelectPoint[0].x, y: tempSelectPoint[0].y };
+                } else if (tempSelectPoint.length >= 2) {
+                    let length = tempSelectPoint.length;
+                    let tempRemoving = 5;
+                    let tempPoint;
+                    for (let i = 0; i < length; i++) {
+                        let temp = +tempSelectPoint[i].y - +y;
+                        temp = Math.abs(temp);
+                        if (temp <= tempRemoving) {
+                            tempPoint = tempSelectPoint[i];
+                            tempRemoving = temp;
+                        }
+                    }
+                    if (tempPoint) {
+                        return { x: tempPoint.x, y: tempPoint.y };
+                    } else {
+                        return { x: x, y: y };
+                    }
+                } else {
+                    return { x: x, y: y };
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
